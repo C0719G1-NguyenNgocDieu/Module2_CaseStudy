@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Codegym.com</title>
+    <style>
+        img {
+            width: 150px;
+            height: 150px;
+        }
+
+        .left {
+            float: left;
+            width: 170px;
+            height: 200px;
+        }
+        .top{
+            position: absolute;
+            top: 700px;
+            left: 800px;
+        }
+    </style>
+</head>
+<body>
+<div>
+    <h1>Products</h1>
+</div>
+<div th:width="10px" th:height="10px">
+    <div><a href="/create-product">Create new product</a></div>
+    <div>
+        <form>
+            <input name="search" type="text" th:value="${search}" placeholder="Search...">
+            <input type="submit" value="Search">
+        </form>
+    </div>
+</div>
+<br><br>
+<div>
+
+    <div th:each="p:${products}" class="left">
+        <a th:href="@{/info/__${p.id}__}"><img th:src="@{'/image/'+${p.image}}"></a>
+        <p><strong th:text="${p.name}">></strong></p>
+        <p th:text="${p.price}"></p>
+        <p th:text="${p.description}"></p>
+        <p><a th:href="@{/edit-product/__${p.id}__}">Edit</a></p>
+        <p><a th:href="@{/delete-product/__${p.id}__}">Delete</a></p>
+
+    </div>
+
+</div>
+<div class="top">
+    <a th:href="@{'/home'( page=${products.number - 1}, search=${search})}"
+       th:if="${products.hasPrevious()}">Previous</a>
+    <span th:text="${products.number + 1}"></span>/<span th:text="${products.totalPages}"></span>
+    <a th:href="@{'/home'( page=${products.number + 1}, search=${search})}" th:if="${products.hasNext()}">Next</a>
+</div>
+</body>
+</html>

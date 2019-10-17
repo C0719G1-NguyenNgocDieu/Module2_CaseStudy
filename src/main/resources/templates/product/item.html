@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Codegym.com</title>
+    <style>
+        img{
+            width: 400px;
+            height: 400px;
+        }
+        .left{
+            float: left;
+        }
+    </style>
+</head>
+<body>
+<div><h1>Product</h1></div>
+<div><a href="/home">Back </a></div>
+<form th:action="@{/info}" th:method="post" th:object="${product}">
+    <div >
+        <div class="left">
+            <h2 th:text="${product.getName()}"></h2>
+            <img th:src="@{'/image/'+${product.image}}">
+            <p th:text="${product.price}"></p>
+        </div>
+        <div>
+            <p th:text="${product.getDescription_image()}"></p>
+        </div>
+    </div>
+    <div>
+<input type="submit" value="Buy">
+    </div>
+</form>
+</body>
+</html>
