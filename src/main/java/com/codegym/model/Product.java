@@ -14,6 +14,7 @@ public class Product {
     private String price;
     private String description;
     private String description_image;
+    private int quantity;
 
     public Product() {
     }
@@ -28,7 +29,7 @@ public class Product {
 
     public Product(String image, String name, String price, String description, String description_image) {
         this.image = image;
-        this.name=name;
+        this.name = name;
         this.price = price;
         this.description = description;
         this.description_image = description_image;
@@ -73,4 +74,13 @@ public class Product {
     public void setDescription_image(String description_image) {
         this.description_image = description_image;
     }
+
+    public void incQuantity() {
+        this.quantity++;
+    }
+
+    public void setQuantity(int quality) {
+        this.quantity = quality;
+    }
+    public int getQuantity(){return this.quantity;}
 }

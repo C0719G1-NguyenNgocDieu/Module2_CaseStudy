@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Codegym.com</title>
+
+</head>
+<body>
+<div>
+    <h1>Cart</h1>
+</div>
+<br><br>
+<form th:method="post" th:action="@{/cart}" >
+
+    <div th:each="p:${products}" class="left">
+        <a th:href="@{/info/__${p.id}__}"><img th:src="@{'/image/'+${p.image}}"></a>
+        <p><strong th:text="${p.name}">></strong></p>
+        <p th:text="${p.price}"></p>
+        <p th:text="${p.description}"></p>
+
+        <p><a th:href="@{/cart/__${p.id}__}">Delete</a></p>
+
+    </div>
+
+</form>
+
+<form action="#" th:action="@{/logout}" method="POST">
+    <button type="submit">Logout</button>
+</form>
+</body>
+</html>

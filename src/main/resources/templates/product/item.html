@@ -17,6 +17,7 @@
 <div><h1>Product</h1></div>
 <div><a href="/home">Back </a></div>
 <form th:action="@{/info}" th:method="post" th:object="${product}">
+    <input type="hidden" name="id" th:field="*{id}">
     <div >
         <div class="left">
             <h2 th:text="${product.getName()}"></h2>
@@ -28,6 +29,9 @@
         </div>
     </div>
     <div>
+<th:block th:if="${message}">
+    <p th:text="${message}"></p>
+</th:block>
 <input type="submit" value="Buy">
     </div>
 </form>

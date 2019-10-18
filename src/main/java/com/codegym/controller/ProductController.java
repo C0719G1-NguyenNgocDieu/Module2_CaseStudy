@@ -1,5 +1,6 @@
 package com.codegym.controller;
 
+import com.codegym.model.Cart;
 import com.codegym.model.MyFile;
 import com.codegym.model.Product;
 import com.codegym.service.ProductService;
@@ -16,14 +17,19 @@ import org.springframework.web.servlet.ModelAndView;
 import java.io.File;
 import java.io.IOException;
 import java.util.Optional;
-
+@SessionAttributes("cart")
 @Controller
 public class ProductController {
     @Autowired
     ProductService productService;
 
+    @ModelAttribute("cart")
+    private Cart setCount(){
+     return new Cart();
+    }
+
     @GetMapping("/home")
-    public ModelAndView showStore(@RequestParam("search") Optional<String> search, @PageableDefault(size = 5,sort = "price") Pageable pageable) {
+    public ModelAndView showStore(@RequestParam("search") Optional<String> search, @PageableDefault(size = 5, sort = "price") Pageable pageable) {
         Page<Product> products;
         if (search.isPresent()) {
             products = productService.findAllByNameContaining(search.get(), pageable);
@@ -80,7 +86,7 @@ public class ProductController {
         Product product = productService.findById(id);
         if (product != null) {
             ModelAndView modelAndView = new ModelAndView("product/edit");
-            modelAndView.addObject("myFile",new MyFile());
+            modelAndView.addObject("myFile", new MyFile());
             modelAndView.addObject("product", product);
             return modelAndView;
         } else {
@@ -106,6 +112,14 @@ public class ProductController {
         return modelAndView;
     }
 
+    @PostMapping("/info")
+    public String doBuy(@RequestParam("id") Long id, Model model,@ModelAttribute("cart") Cart cart) {
+        cart.addProduct(productService.findById(id));
+        model.addAttribute("message", "You buy successfully.");
+        model.addAttribute("product",productService.findById(id));
+        return "product/item";
+    }
+
     //Up load images
     @RequestMapping(value = "/uploadFile/{id}", method = RequestMethod.POST)
     public String uploadFile(@PathVariable long id, MyFile myFile) throws IOException {
@@ -119,5 +133,18 @@ public class ProductController {
         File file = new File("/home/dieunguyen/Downloads/", fileName);
         multipartFile.transferTo(file);
         return "redirect:/home";
+    }
+
+    @GetMapping("/cart")
+    public ModelAndView showCart(@ModelAttribute("cart") Cart cart){
+        ModelAndView modelAndView=new ModelAndView("cart/list");
+        modelAndView.addObject("products",cart.getCart());
+        return  modelAndView;
+    }
+
+    @GetMapping("/cart/{id}")
+    public String deleteCart(@PathVariable long id, @ModelAttribute("cart") Cart cart){
+        cart.removeProduct(id);
+        return "redirect:/cart";
     }
 }

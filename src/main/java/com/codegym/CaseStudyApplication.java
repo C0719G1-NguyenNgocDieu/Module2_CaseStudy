@@ -2,6 +2,7 @@ package com.codegym;
 
 import com.codegym.service.Impl.ProductServiceImpl;
 import com.codegym.service.ProductService;
+import com.codegym.service.UserDetailsServiceImpl;
 import org.springframework.beans.BeansException;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -9,11 +10,9 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.format.FormatterRegistry;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 
 @SpringBootApplication
 public class CaseStudyApplication {
@@ -26,6 +25,12 @@ public class CaseStudyApplication {
 	public ProductService productService(){
     	return new ProductServiceImpl();
 	}
+
+	@Bean
+    public UserDetailsService userDetailsService(){
+        return new UserDetailsServiceImpl();
+    }
+
 
     @Configuration
     class WebConfig implements WebMvcConfigurer, ApplicationContextAware {
@@ -44,12 +49,12 @@ public class CaseStudyApplication {
 //            registry.addFormatter(locationFormatter);
 //        }
 
-        @Override
-        public void addInterceptors(InterceptorRegistry registry) {
-            LocaleChangeInterceptor interceptor = new LocaleChangeInterceptor();
-            interceptor.setParamName("lang");
-            registry.addInterceptor(interceptor);
-        }
+//        @Override
+//        public void addInterceptors(InterceptorRegistry registry) {
+//            LocaleChangeInterceptor interceptor = new LocaleChangeInterceptor();
+//            interceptor.setParamName("lang");
+//            registry.addInterceptor(interceptor);
+//        }
 
         @Override
         public void addResourceHandlers(ResourceHandlerRegistry registry) {
