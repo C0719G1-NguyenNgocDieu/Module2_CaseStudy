@@ -61,7 +61,10 @@ public class CaseStudyApplication {
 
 
             // Image resource.
-            registry.addResourceHandler("/image/**").addResourceLocations("file:/home/dieunguyen/Downloads/");
+            //registry.addResourceHandler("/image/**").addResourceLocations("file:/Users/nhatnguyen/Downloads/test");
+
+            registry.addResourceHandler("/image/**").addResourceLocations("WEB-INF/resources/image/");
+
 
         }
 }}
