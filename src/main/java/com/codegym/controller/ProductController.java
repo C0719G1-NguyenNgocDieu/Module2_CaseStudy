@@ -16,7 +16,10 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.Optional;
+import java.util.UUID;
+
 @SessionAttributes("cart")
 @Controller
 public class ProductController {
@@ -125,13 +128,20 @@ public class ProductController {
     public String uploadFile(@PathVariable long id, MyFile myFile) throws IOException {
 
         MultipartFile multipartFile = myFile.getMultipartFile();
-        String fileName = multipartFile.getOriginalFilename();
+
+        String extension = multipartFile.getOriginalFilename().split("\\.")[1];
+
+        String fileName = UUID.randomUUID() + "." + extension;
         Product product = productService.findById(id);
         product.setImage(fileName.intern());
         productService.save(product);
 
-        File file = new File("/home/dieunguyen/Downloads/", fileName);
-        multipartFile.transferTo(file);
+        //File file = new File("/Users/nhatnguyen/Downloads/test/", fileName);
+        //multipartFile.transferTo(file);
+
+        File file1 = new File(Paths.get("").toAbsolutePath() + "/src/main/webapp/WEB-INF/resources/image/" + fileName);
+        multipartFile.transferTo(file1);
+
         return "redirect:/home";
     }
 
